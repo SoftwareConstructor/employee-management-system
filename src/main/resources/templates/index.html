@@ -10,26 +10,25 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
 </head>
-<body>
-    <h1>Employee Management System</h1>
-
+<body onload="fetchAll()">
+    
     <div class="container">
-        <button onclick="fetchAll()">Fetch All Employee Data</button>
-        <p id="p-array">Lorem ipsum</p></br>
+        <h3 class="mt-3">Employee Management System <a class="btn btn-primary" href="#newemployee">Create New Employee</a></h3>
+        <br>
+        <p id="p-array"></p></br>
     </div>
 </body>
 </html>
 
 <script>
     function fetchAll() {
-        alert('inside function');
         $.ajax({
             type: "GET",
             url: "http://localhost:8080/employees",
             dataType: "json",
             success: function (data, status, xhr) {
-                alert('fetching data');
-                var prettyContent = '<table class="table table-bordered table-hover">';
+                // alert('fetching data');
+                var prettyContent = '<table class="table table-bordered">'
                     + '<thead>'
                     + '<tr class="table-light">'
                     + '<th scope="col">ID</th>'
@@ -40,12 +39,12 @@
 
                 for (let i = 0; i < data.length; i++) {
                     prettyContent 
-                    += '<tbody>';
-                    +    '<tr class="@if($loop->odd) table-active @endif">';
-                    +        '<th scope="row">id :' + data[i].id + '</th>';
-                    +        '<td><a href="/admin/volunteers/{{$a->id}}">' + data[i].firstName + ' ' + data[i].lastName +'</a></td>';
-                    +        '<td>' + data[i].emailId + '</td>';
-                    +    '</tr>';
+                    += '<tbody>'
+                    +    '<tr class="">'
+                    +        '<th scope="row">id :' + data[i].id + '</th>'
+                    +        '<td><a href="#">' + data[i].firstName + ' ' + data[i].lastName +'</a></td>'
+                    +        '<td>' + data[i].emailId + '</td>'
+                    +    '</tr>'
                     + '</tbody>';
                 }
                 prettyContent += '</table>';

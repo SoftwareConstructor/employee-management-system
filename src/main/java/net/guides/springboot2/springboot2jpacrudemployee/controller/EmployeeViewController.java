@@ -32,4 +32,9 @@ public class EmployeeViewController {
     public String index() {
         return "index";
     }
+
+    // @RequestMapping(value = "/viewEmployees", method = RequestMethod.GET)
+    // public String viewEmployee() {
+    //     return "index";
+    // }
 }
