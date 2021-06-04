@@ -3,8 +3,59 @@
 <head>
     <meta charset="UTF-8" />
     <title>Title</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
 </head>
 <body>
     <h1>Employee Management System</h1>
+
+    <div class="container">
+        <button onclick="fetchAll()">Fetch All Employee Data</button>
+        <p id="p-array">Lorem ipsum</p></br>
+    </div>
 </body>
 </html>
+
+<script>
+    function fetchAll() {
+        alert('inside function');
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/employees",
+            dataType: "json",
+            success: function (data, status, xhr) {
+                alert('fetching data');
+                var prettyContent = '<table class="table table-bordered table-hover">';
+                    + '<thead>'
+                    + '<tr class="table-light">'
+                    + '<th scope="col">ID</th>'
+                    + '<th scope="col">Name</th>'
+                    + '<th scope="col">Email</th>'
+                    + '</tr>'
+                    + '</thead>';
+
+                for (let i = 0; i < data.length; i++) {
+                    prettyContent 
+                    += '<tbody>';
+                    +    '<tr class="@if($loop->odd) table-active @endif">';
+                    +        '<th scope="row">id :' + data[i].id + '</th>';
+                    +        '<td><a href="/admin/volunteers/{{$a->id}}">' + data[i].firstName + ' ' + data[i].lastName +'</a></td>';
+                    +        '<td>' + data[i].emailId + '</td>';
+                    +    '</tr>';
+                    + '</tbody>';
+                }
+                prettyContent += '</table>';
+                document.querySelector('#p-array').innerHTML = prettyContent;
+            },
+
+            error: function () {
+                alert(status);
+            }
+        });            
+    }
+
+</script>
