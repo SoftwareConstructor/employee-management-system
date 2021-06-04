@@ -15,15 +15,22 @@ public class Employee {
     private String firstName;
     private String lastName;
     private String emailId;
+    private String phoneNo;
+    private String salary;
+    private String position;
+    
  
     public Employee() {
   
     }
  
-    public Employee(String firstName, String lastName, String emailId) {
+    public Employee(String firstName, String lastName, String emailId, String phoneNo, String salary, String position) {
          this.firstName = firstName;
          this.lastName = lastName;
          this.emailId = emailId;
+         this.phoneNo = phoneNo;
+         this.salary = salary;
+         this.position = position;
     }
  
     @Id
@@ -59,9 +66,33 @@ public class Employee {
         this.emailId = emailId;
     }
 
+    @Column(name = "phoneNo", nullable = false)
+    public String getPhoneNo() {
+        return phoneNo;
+    }
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
+    }
+
+    @Column(name = "salary", nullable = false)
+    public String getSalary() {
+        return salary;
+    }
+    public void setSalary(String salary) {
+        this.salary = salary;
+    }
+
+    @Column(name = "position", nullable = false)
+    public String getPosition() {
+        return position;
+    }
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
     @Override
     public String toString() {
-        return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", emailId=" + emailId
+        return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", emailId=" + emailId + ", phoneNo=" + phoneNo + ", salary=" + salary + ", position=" + position
        + "]";
     }
  
