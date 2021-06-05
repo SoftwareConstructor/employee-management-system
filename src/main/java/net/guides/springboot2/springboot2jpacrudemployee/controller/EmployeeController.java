@@ -48,7 +48,11 @@ public class EmployeeController {
     }
     
     @PostMapping("/employees")
+<<<<<<< HEAD
     public Employee createEmployee( Employee employee) {
+=======
+    public Employee createEmployee(Employee employee) {
+>>>>>>> 79048c7798a9be5f96e79afd6a32c89b64a11d6d
         return employeeRepository.save(employee);
     }
 

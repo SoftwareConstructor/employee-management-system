@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Add Employee</title>
+    <title>Create New Employee</title>
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
@@ -19,14 +19,28 @@
     <br>
 
     <form id="frm-insert">
-        <label>First Name:</label><input type="text" name="firstName"></br>
-        <label>Last Name:</label><input type="text" name="lastName"></br>
-        <label>E-Mail Address:</label><input type="text" name="emailId"></br>
-        <label>Phone No:</label><input type="text" name="phoneNo"></br></br>
-        <label>Salary:</label><input type="text" name="salary"></br></br>
-        <label>Position:</label><input type="text" name="position"></br></br>
-
-        <button class="btn btn-success" type="submit">Save</button>
+        <div class="row">
+            <div class="col">
+                <label>First Name:</label><input type="text" class="form-control" id="firstName" name="firstName" required></br>
+            </div>
+            <div class="col">
+                <label>Last Name:</label><input type="text" class="form-control" id="lastName" name="lastName" required></br>
+            </div>
+        </div>
+        <div>
+            <div class="form-group">
+                <label>E-Mail Address : </label><input type="text" class="form-control" id="emailId" name="emailId" required ></br>
+            </div>
+            <div class="form-group">
+                <label>Phone No:</label><input type="text" class="form-control" id="phoneNo" name="phoneNo" required></br>
+            </div>
+            <div class="form-group">
+                <label>Salary:</label><input type="text" class="form-control" id="salary" name="salary" required></br>
+            </div>
+            <div class="form-group">
+                <label>Position:</label><input type="text" class="form-control" id="position" name="position" required></br>
+            </div>
+            <button class="btn btn-success" type="submit">Save</button>
     </form>
 </div>
 
@@ -34,42 +48,42 @@
 
 <script>
     $('#frm-insert').submit(function (event) {
-        alert('inside function');
-        event.preventDefault();
-
-        //use this technique for ajax data if not using RESTFul
-        //NOTE: this will capture the name attribute (not id) in our form
-        // var formData = $(this).serialize();
-
-        console.log($("#frm-insert").serialize());  // check using console to make sure all the form data values are correctly serialized
+        var firstName = $('#firstName').val();
+        var lastName = $('#lastName').val();
+        var emailId = $('#emailId').val();
+        var phoneNo = $('#phoneNo').val();
+        var salary = $('#salary').val();
+        var position = $('#position').val();
 
         $.ajax({
             type: "POST",
             url: "http://localhost:8080/employees",
             data: {
+<<<<<<< HEAD
                 firstName: "jep",
                 lastName: "jep",
                 emailId: "j@a.com",
                 phoneNo: "0122222222",
                 salary: "5000",
                 position: "Manager"
+=======
+                firstName : firstName,
+                lastName : lastName,
+                emailId : emailId,
+                phoneNo : phoneNo,
+                salary : salary,
+                position : position,
+>>>>>>> 79048c7798a9be5f96e79afd6a32c89b64a11d6d
             },
             dataType: "json",
-
             success: function (data, status, xhr) {
-                if (data.rowcount > 0) {
-                    alert('ok, successfully add data');
-                    appendList(data);
-                }
-                else {
-                    alert('fail to insert, ' + data.errormessage);
-                }
+                alert("data successfully inserted");
             },
-
+    
             error: function () {
-                alert('Error' + status.log);
+                alert(status);
             }
-        });
+        });            
     });
 
 </script>
