@@ -48,11 +48,7 @@ public class EmployeeController {
     }
     
     @PostMapping("/employees")
-<<<<<<< HEAD
-    public Employee createEmployee( Employee employee) {
-=======
     public Employee createEmployee(Employee employee) {
->>>>>>> 79048c7798a9be5f96e79afd6a32c89b64a11d6d
         return employeeRepository.save(employee);
     }
 
@@ -65,6 +61,9 @@ public class EmployeeController {
         employee.setEmailId(employeeDetails.getEmailId());
         employee.setLastName(employeeDetails.getLastName());
         employee.setFirstName(employeeDetails.getFirstName());
+        employee.setPhoneNo(employeeDetails.getPhoneNo());
+        employee.setSalary(employeeDetails.getSalary());
+        employee.setPosition(employeeDetails.getPosition());
         final Employee updatedEmployee = employeeRepository.save(employee);
         return ResponseEntity.ok(updatedEmployee);
     }
@@ -74,7 +73,6 @@ public class EmployeeController {
          throws ResourceNotFoundException {
         Employee employee = employeeRepository.findById(employeeId)
        .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
-
         employeeRepository.delete(employee);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
