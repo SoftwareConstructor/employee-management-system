@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Title</title>
+    <title>Employee Management System</title>
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
@@ -156,6 +156,18 @@
                     + '<th scope="col">Operation</th>'
                     + '</tr>'
                     + '</thead>';
+
+                if(data.length == 0){
+                    prettyContent
+                        += '<tbody>'
+                        + '<tr class="">'
+                        + '<th scope="row">Empty</th>'
+                        + '<td></td>'
+                        + '<td></td>'
+                        + '<td></td>'
+                        + '</tr>'
+                        + '</tbody>';
+                }
 
                 for (let i = 0; i < data.length; i++) {
                     prettyContent
