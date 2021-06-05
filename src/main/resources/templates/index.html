@@ -13,6 +13,64 @@
         crossorigin="anonymous"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <style>
+
+        .edit-employee-modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        .edit-employee-modal-body{
+            padding: 10px 20px;
+            /* text-align: center; */
+            font-size: 15px;
+            max-height: 700px;
+            overflow: scroll;
+            overflow-x: hidden;
+        }
+    /* Modal Content */
+        .edit-employee-modal-content {    
+            background-color: #fefefe;
+            margin: auto;
+            border: 1px solid #888;
+            width: 40%;
+            height: 100%;
+            position: relative;
+        }
+        .edit-employee-modal-title{
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .edit-employee-modal-footer {
+            padding: 2px 16px;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translate(-50%, 0px);
+        }
+        .edit-employee-modal-header {
+            padding: 20px;
+            padding-bottom: 5px;
+        }
+
+        .edit-button{
+            color: white;
+        }
+
+
+    </style>
+
 </head>
 
 <body onload="fetchAll()">
@@ -23,11 +81,65 @@
         <br>
         <p id="p-array"></p></br>
     </div>
+
+
+
+    <div  class="edit-employee-modal " style="xdisplay: block;">
+        <div class="edit-employee-modal-content">
+            <div class="edit-employee-modal-header">
+                <span class="edit-employee-modal-title">Edit Employee </span>
+            </div>
+            <div class="edit-employee-modal-body">
+                <div>
+                    <form id="edit-new-employee-form">
+                        <input type="hidden" class="form-control" id="edit-id">
+
+                        <div class="form-group">
+                          <label for="edit-first-name" class="col-form-label">First Name:</label>
+                          <input type="text" class="form-control" id="edit-first-name">
+                        </div>
+                        <div class="form-group">
+                          <label for="edit-last-name" class="col-form-label">Last Name:</label>
+                          <input type="text" class="form-control" id="edit-last-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-email" class="col-form-label">Email:</label>
+                            <input type="text" class="form-control" id="edit-email">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-phone" class="col-form-label">Phone Number:</label>
+                            <input type="text" class="form-control" id="edit-phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-salary" class="col-form-label">Salary:</label>
+                            <input type="text" class="form-control" id="edit-salary">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-position" class="col-form-label">Position:</label>
+                            <input type="text" class="form-control" id="edit-position">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="edit-employee-modal-footer" style="text-align: center;">
+                <button class="form-edit-button btn btn-primary">Save</button>
+            </div>
+        </div> 
+    </div>
+
+
+
+
+
+
+
+
 </body>
 
 </html>
 
 <script>
+
     function fetchAll() {
         $.ajax({
             type: "GET",
@@ -41,6 +153,7 @@
                     + '<th scope="col">ID</th>'
                     + '<th scope="col">Name</th>'
                     + '<th scope="col">Email</th>'
+                    + '<th scope="col">Operation</th>'
                     + '</tr>'
                     + '</thead>';
 
@@ -51,11 +164,77 @@
                         + '<th scope="row">id :' + data[i].id + '</th>'
                         + '<td><a href="http://localhost:8080/viewEmployees?id=' + data[i].id + '">' + data[i].firstName + ' ' + data[i].lastName + '</a></td>'
                         + '<td>' + data[i].emailId + '</td>'
+                        + '<td><button class="edit-button btn btn-info" data-edit-id="'+ data[i].id +'">Edit</button>  <button class="delete-button btn btn-danger" data-delete-id="'+ data[i].id +'">Delete</button></td>'
                         + '</tr>'
                         + '</tbody>';
                 }
                 prettyContent += '</table>';
                 document.querySelector('#p-array').innerHTML = prettyContent;
+
+                $(".edit-button").unbind('click').click(function(){
+                    var $this = $(this);
+                    var editId = $this.data('edit-id');
+                    $('#edit-id').val(editId);
+
+                    $.ajax({
+                        type: "GET",
+                        url: "http://localhost:8080/employees/" + editId,
+                        dataType: "json",
+                        success: function (data, status, xhr) {
+                            $('#edit-first-name').val(data.firstName);
+                            $('#edit-last-name').val(data.lastName);
+                            $('#edit-email').val(data.emailId);
+                            $('#edit-phone').val(data.phoneNo);
+                            $('#edit-salary').val(data.salary);
+                            $('#edit-position').val(data.position);
+                            $('.edit-employee-modal').show();
+                        },
+                
+                        error: function () {
+                            alert(status);
+                        }
+                    });            
+                });
+
+                $(".delete-button").unbind('click').click(function() {
+                    var $this = $(this);
+                    var deleteId = $this.data('delete-id');
+                    // alert(deleteId);
+
+                    Swal.fire({
+                        title: 'Are you sure',
+                        text: "Want to delete this employee?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                type: "DELETE",
+                                url: "http://localhost:8080/employees/" + deleteId,
+                                dataType: "json",
+                                success: function (data, status, xhr) {
+                                    Swal.fire(
+                                        'Deleted!',
+                                        'Employee has been deleted.',
+                                        'success'
+                                    )
+                                    location.reload();
+                                },
+                                error: function () {
+                                    alert(status);
+                                }
+                            });            
+
+                        }
+                    })
+                });
+
+
+
+
             },
 
             error: function () {
@@ -63,5 +242,48 @@
             }
         });
     }
+
+$(document).ready(function(){
+
+    $('.form-edit-button').click(function(){
+        var editFirstName = $('#edit-first-name').val();
+        var editLastName = $('#edit-last-name').val();
+        var editEmailId = $('#edit-email').val();
+        var editPhone = $('#edit-phone').val();
+        var editSalary = $('#edit-salary').val();
+        var editPosition = $('#edit-position').val();
+        var editId = $('#edit-id').val();
+        $.ajax({
+            type: "PUT",
+            url: "http://localhost:8080/employees/" + editId,
+            data: {
+                firstName : editFirstName,
+                lastName : editLastName,
+                emailId : editEmailId,
+                phoneNo : editPhone,
+                salary : editSalary,
+                position : editPosition
+            },
+            dataType: "json",
+            success: function (data, status, xhr) {
+                $('.edit-employee-modal').hide();
+                $('#edit-new-employee-form').trigger("reset");
+                location.reload();
+            },
+    
+            error: function () {
+                alert(status);
+            }
+        });            
+    });
+
+    $(document).click(function (e) {
+        if ($(e.target).is('.edit-employee-modal')) {
+            $('.edit-employee-modal').fadeOut(500);
+            $('#edit-new-employee-form').trigger("reset");
+        }
+    });
+
+});
 
 </script>
